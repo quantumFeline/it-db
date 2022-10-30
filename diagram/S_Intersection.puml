@@ -1,0 +1,26 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor User
+participant UserPanel
+participant QueryProcessor
+participant Database
+database DataTable as DataTable1
+database DataTable as DataTable2
+
+User -> UserPanel: Choose table
+return confirm/deny
+User -> UserPanel: Choose the second table
+UserPanel -> QueryProcessor: Send intersection request
+QueryProcessor -> QueryProcessor: Translate request
+QueryProcessor -> Database: Send query
+Database -> DataTable1: Request data
+return data
+Database -> DataTable2: Request data
+return data
+Database -> Database: Calculate intersection
+Database --> QueryProcessor: data
+QueryProcessor -> QueryProcessor: Form a list of entries
+QueryProcessor --> UserPanel: list of entries
+UserPanel --> User: Display data
+@enduml

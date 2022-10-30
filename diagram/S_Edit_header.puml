@@ -1,0 +1,56 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor User
+participant UserPanel
+participant QueryProcessor
+participant Database
+
+User -> UserPanel: Request to edit configuration
+alt not superuser
+return Access denied
+else
+UserPanel --> User: Open admin commands
+User -> UserPanel: Choose table
+UserPanel -> QueryProcessor: Send view request
+note right of QueryProcessor
+Do the ViewTable
+operation as
+standard
+endnote
+return
+UserPanel --> User: Display table
+User -> UserPanel: Edit header
+UserPanel --> User: Choose next command
+alt wants to extend table
+User -> UserPanel: Add column
+UserPanel --> User: Request name
+User -> UserPanel: Set column name
+else wants to delete existing column
+UserPanel --> User: Request confirmation
+User -> UserPanel: Confirm/cancel
+note right of UserPanel
+if operation cancelled,
+sequence execution
+stops here
+endnote
+end
+
+UserPanel -> QueryProcessor: Send request
+QueryProcessor -> QueryProcessor: Translate request
+QueryProcessor -> Database: Send query
+Database -> DataTable: Add/delete column
+return success/error code
+Database --> QueryProcessor: success/error code
+alt created
+QueryProcessor -> Database: send View request to display the new table
+Database --> QueryProcessor: return new table data
+QueryProcessor -> QueryProcessor: Form a list of entries
+QueryProcessor --> UserPanel: list of entries
+UserPanel --> User: Display the new table
+else not enough memory; invalid name
+QueryProcessor --> UserPanel: send error code
+UserPanel --> User: display an error message
+end
+end
+@enduml

@@ -1,0 +1,43 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor User
+participant UserPanel
+participant QueryProcessor
+participant Database
+database DataTable
+
+User -> UserPanel: Choose table
+note right of UserPanel
+Display table
+endnote
+return table
+User -> UserPanel: Add entry
+UserPanel -> QueryProcessor: Request list of columns
+QueryProcessor -> Database: Request headers
+Database -> DataTable: Request headers
+return
+Database --> QueryProcessor: headers
+QueryProcessor --> UserPanel: header list
+UserPanel --> UserPanel: Display headers
+UserPanel --> User: Request entry information
+User --> UserPanel: entry information
+UserPanel -> QueryProcessor: Send request
+QueryProcessor -> QueryProcessor: Translate request
+QueryProcessor -> Database: Send query
+Database -> DataTable: Request to add entry
+return data
+Database --> QueryProcessor: success/error code
+alt success
+Database --> DataTable: request new list of entries
+return data
+QueryProcessor -> QueryProcessor: Form a list of entries
+QueryProcessor --> UserPanel: list of entries
+UserPanel --> User: Display data
+else
+Database --> QueryProcessor: error
+QueryProcessor --> UserPanel: error
+UserPanel --> User: Display error message
+end
+
+@enduml

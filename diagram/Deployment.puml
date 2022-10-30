@@ -1,0 +1,17 @@
+@startuml
+'https://plantuml.com/deployment-diagram
+
+actor User
+
+node ServerProcess {
+  database "DB engine"
+  rectangle "server network connector"
+}
+node ClientProcess {
+  interface "user UI"
+  rectangle "client network connector"
+}
+
+User --> ClientProcess
+ServerProcess <--> ClientProcess
+@enduml

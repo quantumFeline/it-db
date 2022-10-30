@@ -1,0 +1,44 @@
+@startuml
+
+UserPanel -- QueryProcessor
+Database *-- DataTable
+DataTable *-- DataRow
+DataTable *-- TableHeader
+TableHeader *-- ColumnHeader
+ColumnHeader *-- ColumnType
+QueryProcessor --> Database
+
+class Database {
+    DataTable[] tables
+}
+
+class DataTable {
+    List<DataEntry*> entries
+}
+
+class TableHeader {
+  List<ColumnHeader> columns
+}
+
+class ColumnHeader {
+  String name
+  ColumnType type
+}
+
+class DataRow {
+List<Object>
+}
+
+class QueryProcessor {
+}
+
+class UserPanel {
+AccessLevel currentAccessLevel
+}
+
+enum ColumnType {
+int
+string
+}
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor User
+participant UserPanel
+participant QueryProcessor
+participant Database
+database DataTable
+
+User -> UserPanel: Choose table
+UserPanel -> QueryProcessor: Send request
+QueryProcessor -> QueryProcessor: Translate request
+QueryProcessor -> Database: Send query
+alt table with this name found
+Database -> DataTable: Request data
+return data
+Database --> QueryProcessor: data
+QueryProcessor -> QueryProcessor: Form a list of entries
+QueryProcessor --> UserPanel: list of entries
+UserPanel --> User: Display data
+else
+Database --> QueryProcessor: error
+QueryProcessor --> UserPanel: error
+UserPanel --> User: Display error message
+end
+@enduml

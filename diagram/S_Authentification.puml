@@ -1,0 +1,25 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor User
+participant UserPanel
+participant Authenticator
+database UserTable
+loop  until successful login
+User -> UserPanel: Enter login
+UserPanel --> User: Request password
+
+User -> UserPanel: Enter password
+UserPanel -> Authenticator: Send data
+Authenticator -> Authenticator: Calculate hash
+Authenticator -> UserTable: Find user
+return (user in database)
+alt user in base
+    Authenticator --> UserPanel: Confirm login
+else
+    Authenticator --> UserPanel: Deny access
+end
+UserPanel --> User: Display
+end
+
+@enduml

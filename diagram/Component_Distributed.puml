@@ -1,0 +1,36 @@
+@startuml
+'https://plantuml.com/component-diagram
+
+package Client {
+
+    package UserUI {
+    }
+
+    [NetWorkConnectorClient]
+}
+
+package Server {
+database DBEngine {
+  [QueryProcessor]
+  database dbPart1 {
+    [Table1]
+    [Table2]
+  }
+  database dbPart2 {
+    [Table3]
+    [Table4]
+  }
+    package Authenticator {
+    }
+}
+    [NetWorkConnectorServer]
+}
+
+QueryProcessor --> Authenticator
+QueryProcessor --> dbPart1
+QueryProcessor --> dbPart2
+UserUI --> [NetWorkConnectorClient]
+[NetWorkConnectorServer] --> QueryProcessor
+[NetWorkConnectorClient] <--> [NetWorkConnectorServer]
+
+@enduml

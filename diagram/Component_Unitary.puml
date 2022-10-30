@@ -1,0 +1,28 @@
+@startuml
+'https://plantuml.com/component-diagram
+
+database DBEngine {
+  [QueryProcessor]
+  database dbPart1 {
+    [Table1]
+    [Table2]
+  }
+  database dbPart2 {
+    [Table3]
+    [Table4]
+  }
+    package Authenticator {
+    }
+
+    package UserUI {
+    }
+}
+
+
+
+UserUI <--> QueryProcessor
+QueryProcessor --> Authenticator
+QueryProcessor --> dbPart1
+QueryProcessor --> dbPart2
+
+@enduml

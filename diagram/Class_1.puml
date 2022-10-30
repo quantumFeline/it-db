@@ -1,0 +1,59 @@
+@startuml
+
+Authenticator <.. UserPanel
+UserPanel *-- AccessLevel
+UserPanel -- QueryProcessor
+Database *-- DataTable
+DataTable *-- DataRow
+DataTable *-- TableHeader
+TableHeader *-- ColumnHeader
+ColumnHeader *-- ColumnType
+QueryProcessor --> Database
+UserTable --|> DataTable
+Authenticator ..> UserTable
+
+class Database {
+    DataTable[] tables
+}
+
+class DataTable {
+    List<DataRow*> entries
+}
+
+class TableHeader {
+  List<ColumnHeader> columns
+}
+
+class ColumnHeader {
+  String name
+  ColumnType type
+}
+
+class UserTable
+
+class DataRow {
+List<Object>
+}
+
+class QueryProcessor {
+}
+
+class UserPanel {
+AccessLevel currentAccessLevel
+}
+
+class Authenticator {
+}
+
+
+enum AccessLevel {
+USER
+SUPERUSER
+}
+
+enum ColumnType {
+int
+string
+}
+
+@enduml
