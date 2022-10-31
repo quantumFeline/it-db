@@ -1,4 +1,8 @@
-package org.example;
+package org.example.client;
+
+import org.example.server.Database;
+import org.example.server.table.ErrorCode;
+import org.example.server.QueryProcessor;
 
 import java.util.Scanner;
 

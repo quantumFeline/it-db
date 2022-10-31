@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.server.Database;
+import org.example.server.table.ErrorCode;
+import org.example.server.QueryProcessor;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +30,7 @@ public class QueryProcessorTest {
     public void tableAdd() {
         queryProcessor.sendQuery("add_table a x int");
         assertEquals(queryProcessor.getSuccessErrorCode(), ErrorCode.SUCCESS_CODE);
-        assertEquals(queryProcessor.getLastResult(), "Table added successfully");
+        assertEquals(queryProcessor.getLastResult(), "Table added successfully\n");
     }
 
     @Test
@@ -49,8 +52,8 @@ public class QueryProcessorTest {
     @Test
     public void tableAddUnknownType() {
         queryProcessor.sendQuery("add_table a x monkey");
-        assertEquals(queryProcessor.getSuccessErrorCode(), ErrorCode.SUCCESS_CODE);
-        assertEquals(queryProcessor.getLastResult(), "Table added successfully");
+        assertEquals(queryProcessor.getSuccessErrorCode(), ErrorCode.UNSUPPORTED_FIELD_TYPE);
+        assertEquals(queryProcessor.getLastError(), "Unsupported field type");
     }
 
 
@@ -59,7 +62,7 @@ public class QueryProcessorTest {
         queryProcessor.sendQuery("add_table a x int");
         queryProcessor.sendQuery("add_entry a 5");
         assertEquals(queryProcessor.getSuccessErrorCode(), ErrorCode.SUCCESS_CODE);
-        assertEquals(queryProcessor.getLastResult(), "Entry added successfully");
+        assertEquals(queryProcessor.getLastResult(), "Entry added successfully\n");
     }
 
     @Test
@@ -67,7 +70,7 @@ public class QueryProcessorTest {
         queryProcessor.sendQuery("add_table a x int");
         queryProcessor.sendQuery("add_entry a 5");
         assertEquals(queryProcessor.getSuccessErrorCode(), ErrorCode.SUCCESS_CODE);
-        assertEquals(queryProcessor.getLastResult(), "Entry added successfully");
+        assertEquals(queryProcessor.getLastResult(), "Entry added successfully\n");
         queryProcessor.sendQuery("select a 10");
         assertEquals(queryProcessor.getSuccessErrorCode(), ErrorCode.SUCCESS_CODE);
         System.out.println(queryProcessor.getLastResult());
@@ -78,7 +81,7 @@ public class QueryProcessorTest {
         queryProcessor.sendQuery("add_table a x int");
         queryProcessor.sendQuery("add_entry a 5");
         assertEquals(queryProcessor.getSuccessErrorCode(), ErrorCode.SUCCESS_CODE);
-        assertEquals(queryProcessor.getLastResult(), "Entry added successfully");
+        assertEquals(queryProcessor.getLastResult(), "Entry added successfully\n");
         queryProcessor.sendQuery("select b 10");
         assertEquals(queryProcessor.getSuccessErrorCode(), ErrorCode.TABLE_NOT_FOUND);
     }

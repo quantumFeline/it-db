@@ -1,4 +1,4 @@
-package org.example;
+package org.example.server.table;
 
 public enum ErrorCode {
     UNINITIALIZED,

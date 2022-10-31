@@ -1,8 +1,9 @@
-package org.example;
+package org.example.server;
 
-import org.example.table.DataRow;
-import org.example.table.DataTable;
-import org.example.table.TableHeader;
+import org.example.server.table.DataRow;
+import org.example.server.table.DataTable;
+import org.example.server.table.ErrorCode;
+import org.example.server.table.TableHeader;
 
 import java.util.*;
 import java.util.stream.Collectors;

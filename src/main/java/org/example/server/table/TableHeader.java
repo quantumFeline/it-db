@@ -1,14 +1,16 @@
-package org.example.table;
+package org.example.server.table;
 
-import com.sun.org.apache.bcel.internal.generic.ObjectType;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ObjectType;
 
-import java.security.InvalidParameterException;
+import javax.lang.model.type.UnknownTypeException;
+import javax.xml.bind.TypeConstraintException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class TableHeader {
-    List<ColumnHeader> columnHeaderList;
+    List<org.example.server.table.ColumnHeader> columnHeaderList;
 
     public TableHeader(List<String> headerList) {
         columnHeaderList = new ArrayList<>();
@@ -26,17 +28,18 @@ public class TableHeader {
                     break;
                 default:
                     typename = "";
+                    throw new TypeConstraintException("Only support int, float, string");
             }
-            columnHeaderList.add(new ColumnHeader(headerList.get(i), typename));
+            columnHeaderList.add(new org.example.server.table.ColumnHeader(headerList.get(i), typename));
         }
     }
 
     public List<String> getHeaderTypes() {
-        return columnHeaderList.stream().map(ColumnHeader::getType).collect(Collectors.toList());
+        return columnHeaderList.stream().map(org.example.server.table.ColumnHeader::getType).collect(Collectors.toList());
     }
 
     public List<String> getHeaderNames() {
-        return columnHeaderList.stream().map(ColumnHeader::getName).collect(Collectors.toList());
+        return columnHeaderList.stream().map(org.example.server.table.ColumnHeader::getName).collect(Collectors.toList());
     }
 
     @Override

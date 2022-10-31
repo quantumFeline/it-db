@@ -1,8 +1,5 @@
-package org.example.table;
+package org.example.server.table;
 
-import com.sun.org.apache.bcel.internal.generic.ObjectType;
-
-import javax.lang.model.type.UnknownTypeException;
 import javax.xml.bind.TypeConstraintException;
 import java.util.ArrayList;
 import java.util.List;

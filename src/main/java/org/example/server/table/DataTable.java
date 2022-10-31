@@ -1,6 +1,4 @@
-package org.example.table;
-
-import org.example.Database;
+package org.example.server.table;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -9,22 +7,22 @@ import java.util.List;
 public class DataTable {
     String tableName;
     TableHeader header;
-    List <DataRow> entries;
+    List <org.example.server.table.DataRow> entries;
 
-    public DataTable(String name, TableHeader header) {
+    public DataTable(String name, org.example.server.table.TableHeader header) {
         this.tableName = name;
         this.header = header;
         entries = new ArrayList<>();
     }
 
-    public void addEntry(DataRow entry) {
+    public void addEntry(org.example.server.table.DataRow entry) {
         if (!verifyEntryFormat(entry)) {
             throw new InvalidParameterException();
         }
         entries.add(entry);
     }
 
-    public List<DataRow> getEntries(int n_entries) {
+    public List<org.example.server.table.DataRow> getEntries(int n_entries) {
         return entries.size() < n_entries? entries : entries.subList(0, n_entries);
     }
 
@@ -32,7 +30,7 @@ public class DataTable {
         return entries.size();
     }
 
-    protected boolean verifyEntryFormat(DataRow entry) {
+    protected boolean verifyEntryFormat(org.example.server.table.DataRow entry) {
         return entry.getTypes().equals(header.getHeaderTypes());
     }
 
@@ -41,12 +39,12 @@ public class DataTable {
         return "Table " + tableName + ": " + header ;
     }
 
-    public TableHeader getHeader() {
+    public org.example.server.table.TableHeader getHeader() {
         return header;
     }
 
     public Object getField(int row_i, String field) {
-        DataRow row = entries.get(row_i);
+        org.example.server.table.DataRow row = entries.get(row_i);
         for (int i = 0; i < header.getHeaderNames().size(); i++) {
             if (header.getHeaderNames().get(i).equals(field)) {
                 return row.getRow().get(i);

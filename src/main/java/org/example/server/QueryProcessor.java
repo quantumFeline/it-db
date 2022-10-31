@@ -1,7 +1,8 @@
-package org.example;
+package org.example.server;
 
-import org.example.table.DataRow;
-import org.example.table.TableHeader;
+import org.example.server.table.DataRow;
+import org.example.server.table.ErrorCode;
+import org.example.server.table.TableHeader;
 
 import javax.xml.bind.TypeConstraintException;
 import java.security.InvalidParameterException;
@@ -22,7 +23,7 @@ public class QueryProcessor {
     private static final String INTERSECTION = "INTERSECTION";
     Database database;
 
-    QueryProcessor(Database database) {
+    public QueryProcessor(Database database) {
         this.database = database;
     }
 

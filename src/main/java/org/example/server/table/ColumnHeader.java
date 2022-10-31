@@ -1,6 +1,4 @@
-package org.example.table;
-
-import com.sun.org.apache.bcel.internal.generic.ObjectType;
+package org.example.server.table;
 
 public class ColumnHeader {
     String name;
