@@ -31,6 +31,22 @@ public class QueryProcessorTest {
     }
 
     @Test
+    public void testIntersection() {
+        queryProcessor.sendQuery("add_table a id int species string");
+        queryProcessor.sendQuery("add_table b id int age float owner string");
+        assertEquals(queryProcessor.getSuccessErrorCode(), ErrorCode.SUCCESS_CODE);
+        queryProcessor.sendQuery("add_entry a 4 kitten");
+        queryProcessor.sendQuery("add_entry a 6 puppy");
+        assertEquals(queryProcessor.getSuccessErrorCode(), ErrorCode.SUCCESS_CODE);
+        queryProcessor.sendQuery("add_entry b 4 0.15 Olga");
+        queryProcessor.sendQuery("add_entry b 15 1.15 Anatoliy");
+        assertEquals(queryProcessor.getSuccessErrorCode(), ErrorCode.SUCCESS_CODE);
+        queryProcessor.sendQuery("intersection a b id id");
+        assertEquals(queryProcessor.getSuccessErrorCode(), ErrorCode.SUCCESS_CODE);
+        System.out.println(queryProcessor.getLastResult());
+    }
+
+    @Test
     public void tableAddUnknownType() {
         queryProcessor.sendQuery("add_table a x monkey");
         assertEquals(queryProcessor.getSuccessErrorCode(), ErrorCode.SUCCESS_CODE);

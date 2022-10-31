@@ -19,6 +19,7 @@ public class QueryProcessor {
     private static final String LIST = "LIST";
     private static final String ADD_TABLE = "ADD_TABLE";
     private static final String ADD_ENTRY = "ADD_ENTRY";
+    private static final String INTERSECTION = "INTERSECTION";
     Database database;
 
     QueryProcessor(Database database) {
@@ -36,7 +37,7 @@ public class QueryProcessor {
                     String tableName = query[1];
                     int n_entries = Integer.parseInt(query[2]);
                     List<DataRow> entries = database.getEntries(tableName, n_entries);
-                    if (database.getSuccessErrorCode() == Database.NO_SUCH_TABLE_CODE) {
+                    if (database.getSuccessErrorCode() == ErrorCode.TABLE_NOT_FOUND) {
                         throw new NoSuchElementException();
                     }
                     StringBuilder out_b = new StringBuilder(tableName);
@@ -55,18 +56,26 @@ public class QueryProcessor {
                     String tableName = query[1];
                     TableHeader header = new TableHeader(Arrays.asList(query).subList(2,query.length));
                     database.addTable(tableName, header);
-                    out = "Table added successfully";
                     break;
-                } case ADD_ENTRY: {
+                }
+                case INTERSECTION: {
+                    String tableNameA = query[1];
+                    String tableNameB = query[2];
+                    String fieldNameA = query[3];
+                    String fieldNameB = query[4];
+                    out = database.getIntersection(tableNameA, tableNameB, fieldNameA, fieldNameB).toString();
+                    break;
+                }
+                case ADD_ENTRY: {
                     String tableName = query[1];
-                    List<String> headerTypes = database.getTableHeader(tableName).getHeaderTypes();
-                    database.addEntry(tableName, new DataRow(headerTypes, Arrays.asList(query).subList(2, query.length)));
-                    out = "Entry added successfully";
+                    database.addEntry(tableName, Arrays.asList(query).subList(2, query.length));
                     break;
                 }
                 default:
                     throw new InvalidParameterException();
             }
+            out = database.getMessage() + "\n" + out;
+            database.clearMessage();
             successErrorCode = ErrorCode.SUCCESS_CODE;
             lastResult = out;
         } catch (ArrayIndexOutOfBoundsException exception) {

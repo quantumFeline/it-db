@@ -28,6 +28,10 @@ public class DataTable {
         return entries.size() < n_entries? entries : entries.subList(0, n_entries);
     }
 
+    public int getSize() {
+        return entries.size();
+    }
+
     protected boolean verifyEntryFormat(DataRow entry) {
         return entry.getTypes().equals(header.getHeaderTypes());
     }
@@ -39,5 +43,15 @@ public class DataTable {
 
     public TableHeader getHeader() {
         return header;
+    }
+
+    public Object getField(int row_i, String field) {
+        DataRow row = entries.get(row_i);
+        for (int i = 0; i < header.getHeaderNames().size(); i++) {
+            if (header.getHeaderNames().get(i).equals(field)) {
+                return row.getRow().get(i);
+            }
+        }
+        return new Object();
     }
 }

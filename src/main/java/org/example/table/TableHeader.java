@@ -35,6 +35,10 @@ public class TableHeader {
         return columnHeaderList.stream().map(ColumnHeader::getType).collect(Collectors.toList());
     }
 
+    public List<String> getHeaderNames() {
+        return columnHeaderList.stream().map(ColumnHeader::getName).collect(Collectors.toList());
+    }
+
     @Override
     public String toString() {
         return "{" + columnHeaderList + "}";
