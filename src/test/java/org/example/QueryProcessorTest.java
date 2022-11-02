@@ -87,10 +87,11 @@ public class QueryProcessorTest {
     }
 }
 
-// TODO: Get rid of magic constants for success/error codes and supported data types.
-// TODO: Use returning error codes instead of throwing exceptions wherever applicable.
+// Get rid of magic constants for success/error codes <- done
+// TODO: and supported data types.
+// TODO: Use returning error codes instead of throwing exceptions wherever applicable. <- in progress
 // TODO: Serialization and deserialization.
 // TODO: More detailed test cases.
 // TODO: Header editing.
-// TODO: Table intersection operation.
+// Table intersection operation. <- done
 // TODO: Cover other classes with tests.
