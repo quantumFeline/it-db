@@ -3,6 +3,7 @@ package org.example.server.table;
 import javax.xml.bind.TypeConstraintException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 public class DataRow {
     List<Object> row;
@@ -35,19 +36,21 @@ public class DataRow {
         return row;
     }
 
-    public List<String> getTypes() {
-        List<String> types = new ArrayList<>();
-        for (Object element: row) {
-            types.add(element.getClass().getName());
-        }
-        return types;
-    }
-
-    @Override
-    public String toString() {
+    public String toString(TableHeader header) {
         StringBuilder out_b = new StringBuilder("{ ");
+        ListIterator<String> headerIterator = header.getHeaderNames().listIterator();
+        ListIterator<String> headerTypesIterator = header.getHeaderTypes().listIterator();
         for (Object field: row) {
-            out_b.append(field.toString()).append(" ");
+            out_b.append("\"").append(headerIterator.next()).append("\"");
+            out_b.append(": ");
+            if (headerTypesIterator.next().equals("java.lang.String")) {
+                out_b.append("\"").append(field).append("\"");
+            } else {
+                out_b.append(field);
+            }
+            if (headerIterator.hasNext()) {
+                out_b.append(", ");
+            }
         }
         out_b.append("}\n");
         return out_b.toString();
