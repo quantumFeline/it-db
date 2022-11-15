@@ -1,6 +1,6 @@
 package org.example.client;
 
-import java.rmi.RemoteException;
+import org.apache.thrift.TException;
 import java.util.Scanner;
 
 public class UserPanel {
@@ -16,7 +16,7 @@ public class UserPanel {
 
         try {
             client.startConnection();
-        } catch (RemoteException e) {
+        } catch (TException e) {
             System.out.println("Error connecting to server");
             return;
         }
@@ -27,7 +27,12 @@ public class UserPanel {
                 System.out.println("Thank you for using our database!");
                 break;
             }
-            System.out.println(client.sendQuery(userInput));
+            try {
+                System.out.println(client.sendQuery(userInput));
+            } catch (TException e) {
+                System.out.println("Connection exception");
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -1,36 +1,33 @@
 package org.example.client;
-
-import org.example.NetworkConnectorInterface;
-
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
+import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TSocket;
+import org.apache.thrift.transport.TTransport;
+import org.example.NetworkConnectorService;
 
 public class NetworkConnectorClient {
 
-    NetworkConnectorInterface stub;
-
     public NetworkConnectorClient() {}
 
-    public void startConnection() throws RemoteException {
-        try {
-            Registry registry = LocateRegistry.getRegistry(null);
-            stub = (NetworkConnectorInterface) registry.lookup("NCServer");
-            System.out.println(stub.ping());
+    TTransport transport;
+    NetworkConnectorService.Client client;
 
-        } catch (Exception e) {
-            System.err.println("Client exception: " + e);
-            e.printStackTrace();
-        }
+    public void startConnection() throws TException {
+        transport = new TSocket("localhost", 9090);
+        transport.open();
+
+        TProtocol protocol = new  TBinaryProtocol(transport);
+        client = new NetworkConnectorService.Client(protocol);
+        System.out.println(client.ping());
     }
 
-    public String sendQuery(String query) {
-        try {
-            return stub.sendQuery(query);
-        } catch (RemoteException e) {
-            System.out.println("Exception when sending query: " + e);
-            e.printStackTrace();
-            return "Error";
-        }
+    public void endConnection() {
+        transport.close();
+    }
+
+    public String sendQuery(String query) throws TException {
+        return client.sendQuery(query);
+
     }
 }
