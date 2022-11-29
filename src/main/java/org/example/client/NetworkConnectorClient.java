@@ -9,13 +9,21 @@ import java.rmi.registry.Registry;
 public class NetworkConnectorClient {
 
     NetworkConnectorInterface stub;
+    Registry registry = null;
+    final String SERVER_NAME = "NCServer";
 
     public NetworkConnectorClient() {}
 
+    public NetworkConnectorClient(Registry registry) {
+        this.registry = registry;
+    }
+
     public void startConnection() throws RemoteException {
         try {
-            Registry registry = LocateRegistry.getRegistry(null);
-            stub = (NetworkConnectorInterface) registry.lookup("NCServer");
+            if (registry == null) {
+                registry = LocateRegistry.getRegistry(null);
+            }
+            stub = (NetworkConnectorInterface) registry.lookup(SERVER_NAME);
             System.out.println(stub.ping());
 
         } catch (Exception e) {
@@ -32,5 +40,9 @@ public class NetworkConnectorClient {
             e.printStackTrace();
             return "Error";
         }
+    }
+
+    public String getServerName() {
+        return SERVER_NAME;
     }
 }

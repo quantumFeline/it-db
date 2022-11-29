@@ -41,8 +41,8 @@ public class QueryProcessor {
                     if (database.getSuccessErrorCode() == ErrorCode.TABLE_NOT_FOUND) {
                         throw new NoSuchElementException();
                     }
-                    StringBuilder out_b = new StringBuilder(tableName);
-                    out_b.append(database.getTableHeader(tableName)).append("\n");
+                    StringBuilder out_b = new StringBuilder(tableName).append("\n").
+                            append(database.getTableHeader(tableName).getHeaderNames()).append("\n");
                     for (DataRow entry: entries) {
                         out_b.append(entry.toString()).append("\n");
                     }

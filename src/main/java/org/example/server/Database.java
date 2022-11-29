@@ -13,13 +13,13 @@ public class Database {
     private ErrorCode successErrorCode = ErrorCode.UNINITIALIZED;
     private String message = "";
 
-    void addTable(String tableName, TableHeader header) {
+    public void addTable(String tableName, TableHeader header) {
         tables.put(tableName, new DataTable(tableName, header));
         message = "Table added successfully";
         successErrorCode = ErrorCode.SUCCESS_CODE;
     }
 
-    void addEntry(String tableName, DataRow entry) {
+    public void addEntry(String tableName, DataRow entry) {
         if (tableAbsent(tableName)) {
             successErrorCode = ErrorCode.TABLE_NOT_FOUND;
             return;
@@ -35,7 +35,7 @@ public class Database {
         addEntry(tableName, new DataRow(headerTypes, entry));
     }
 
-    TableHeader getTableHeader(String tableName) {
+    public TableHeader getTableHeader(String tableName) {
         if (tableAbsent(tableName)) {
             successErrorCode = ErrorCode.TABLE_NOT_FOUND;
             return null;
@@ -45,24 +45,26 @@ public class Database {
         return tables.get(tableName).getHeader();
     }
 
-    List<String> listTables() {
+    public List<String> listTables() {
         List<String> tables_list = tables.values().stream().map(DataTable::toString).collect(Collectors.toList());
         successErrorCode = ErrorCode.SUCCESS_CODE;
         message = "Tables list:\n";
         return tables_list;
     }
 
-    List<DataRow> getEntries(String tableName, int n_entries) {
+    public List<DataRow> getEntries(String tableName, int n_entries) {
         if (tableAbsent(tableName)) {
             successErrorCode = ErrorCode.TABLE_NOT_FOUND;
+            message = "Table not found";
             return new ArrayList<>();
         }
 
         successErrorCode = ErrorCode.SUCCESS_CODE;
+        message = "Returned " + n_entries + " for " + tableName;
         return tables.get(tableName).getEntries(n_entries);
     }
 
-    List<DataRow> getIntersection(String tableNameA, String tableNameB, String keyFrom, String keyTo) {
+    public List<DataRow> getIntersection(String tableNameA, String tableNameB, String keyFrom, String keyTo) {
         if (tableAbsent(tableNameA) || tableAbsent(tableNameB)) {
             successErrorCode = ErrorCode.TABLE_NOT_FOUND;
             return new ArrayList<>();
@@ -89,10 +91,6 @@ public class Database {
         return intersection;
     }
 
-    boolean tableAbsent(String tableName) {
-        return !tables.containsKey(tableName);
-    }
-
     public ErrorCode getSuccessErrorCode() {
         return successErrorCode;
     }
@@ -103,6 +101,10 @@ public class Database {
 
     public void clearMessage() {
         message = "";
+    }
+
+    private boolean tableAbsent(String tableName) {
+        return !tables.containsKey(tableName);
     }
 
     private Object getField(String tableName, int row_i, String field) {
